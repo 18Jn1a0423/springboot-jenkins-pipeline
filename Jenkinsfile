@@ -6,8 +6,7 @@ pipeline {
     stages {
          stage('Git Clone') {
              steps {
-                 // git branch: 'main', url: 'https:github.com/AjayPulapa/springboot-jenkins-automation.git'
-		     checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/AjayPulapa/springboot-jenkins-automation.git']]])
+		     checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/18Jn1a0423/springboot-jenkins-pipeline.git']]])
 
              } 
          }
@@ -41,63 +40,12 @@ pipeline {
                 }
             }
         }
-        stage("Email Notification") {
-            steps {
-                script {
-                    mail bcc: '',
-                            body: '''Hi Welcome to Jenkins Email Alerts
-                            Pipeline Executed Successfully
-                            Thank You 
-                            ''',
-                            cc: 'ajayajaypulapa143@gmail.com',
-                            from: '',
-                            replyTo: '',
-                            subject: 'Sample Jenkins',
-                            to: 'ajaypulapa7864@gmail.com'
-                }
-            }
-        }
-	 // stage("Push to Docker Hub")
-  //        {
-  //           steps
-  //            {
-  //               withCredentials([string(credentialsId: 'dockerhubpasswd', variable: 'dockerhubpasswd')]) {
-  //                bat "docker login -u ajaypulapa1 -p ${dockerhubpasswd}"
-        
-  //             }
-  //            bat "docker tag devops ajaypulapa1/springboot-jenkins"
-  //            bat "docker push ajaypulapa1/springboot-jenkins"
-  //             }
-  //         }
 
-	    stage("Push to Docker Hub") {
-    steps {
-        withCredentials([string(credentialsId: 'dockerhubpasswd', variable: 'dockerhubpasswd')]) {
-            bat "docker login -u ajaypulapa1 -p ${dockerhubpasswd}"
-        }
-
-        script {
-             // Print available Docker images for debugging
-            bat "docker images"
-
-             // Tag the 'devops' image with the repository name
-            def sourceImage = "springboot-jenkins:latest"
-            def targetImage = "ajaypulapa1/springboot-jenkins:latest"
-            
-            bat "docker tag $sourceImage $targetImage"
-            
-             // Print available Docker images again for debugging
-            bat "docker images"
-            
-             // Push the tagged image to Docker Hub
-            bat "docker push $targetImage"
-        }
-    }
+	   
 }
-
        
-         }
-    }
+ }
+    
 
 
 
